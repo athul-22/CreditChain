@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -7,7 +7,7 @@ import { Tabs, Input, Slider } from 'antd';
 import { DollarOutlined, CalendarOutlined } from '@ant-design/icons';
 import Navbar from '@/components/Navbar';
 
-import { useAccount, useConnect } from 'wagmi'
+import { useAccount, useConnect } from 'wagmi';
 
 // import '../css/style.css';
 
@@ -27,11 +27,8 @@ const images = {
 
 const { TabPane } = Tabs;
 
-
-
 export default function Home() {
-
-  const { address } = useAccount()
+  const { address } = useAccount();
 
   const [borrowAmount, setBorrowAmount] = useState('');
   const [borrowMonths, setBorrowMonths] = useState(1);
@@ -46,7 +43,11 @@ export default function Home() {
     } else {
       const years = Math.floor(months / 12);
       const remainingMonths = months % 12;
-      return `${years} year${years > 1 ? 's' : ''}${remainingMonths > 0 ? ` ${remainingMonths} month${remainingMonths > 1 ? 's' : ''}` : ''}`.trim();
+      return `${years} year${years > 1 ? 's' : ''}${
+        remainingMonths > 0
+          ? ` ${remainingMonths} month${remainingMonths > 1 ? 's' : ''}`
+          : ''
+      }`.trim();
     }
   };
 
@@ -64,7 +65,7 @@ export default function Home() {
   useEffect(() => {
     if (lendingAmount && lendingMonths) {
       const amount = parseFloat(lendingAmount);
-      const returnRate = 0.40 / 12;
+      const returnRate = 0.4 / 12;
       const returnAmount = amount * returnRate * lendingMonths;
       setLendingOutput((amount + returnAmount).toFixed(2));
     } else {
@@ -79,18 +80,36 @@ export default function Home() {
 
     return (
       <div className="w-full h-4 bg-gray-200 rounded overflow-hidden mt-2">
-        <div className="h-full bg-blue-600" style={{ width: `${percentAmount}%` }}></div>
-        <div className="h-full bg-yellow-400" style={{ width: `${percentExtra}%` }}></div>
+        <div
+          className="h-full bg-blue-600"
+          style={{ width: `${percentAmount}%` }}
+        ></div>
+        <div
+          className="h-full bg-yellow-400"
+          style={{ width: `${percentExtra}%` }}
+        ></div>
       </div>
     );
   };
 
   return (
-    <div className="relative min-h-screen" style={{marginTop:'-300px',backgroundImage: 'linear-gradient(#ecf4ff 1px, transparent 1px), linear-gradient(to right, #ecf4ff 1px, transparent 1px)', backgroundSize: '34px 34px' }}>
-      
-      <div  className="text-center background-pattern" >
-      <Navbar />
-        <p className="text-6xl font-extrabold text-blue-600" style={{marginTop:'200px',paddingTop:'200px'}}>CREDIT CHAIN</p>
+    <div
+      className="relative min-h-screen"
+      style={{
+        marginTop: '-300px',
+        backgroundImage:
+          'linear-gradient(#ecf4ff 1px, transparent 1px), linear-gradient(to right, #ecf4ff 1px, transparent 1px)',
+        backgroundSize: '34px 34px',
+      }}
+    >
+      <div className="text-center background-pattern">
+        <Navbar />
+        <p
+          className="text-6xl font-extrabold text-blue-600"
+          style={{ marginTop: '200px', paddingTop: '200px' }}
+        >
+          CREDIT CHAIN
+        </p>
         <p className="text-2xl font-medium text-black mt-4">
           Collateral free Borrowing and Lending Platform
         </p>
@@ -121,11 +140,21 @@ export default function Home() {
               {borrowOutput && (
                 <>
                   <div className="text-lg mb-2">
-                    Final Amount: <span className="text-2xl text-blue-600 font-bold">₹{borrowOutput}</span>
+                    Final Amount:{' '}
+                    <span className="text-2xl text-blue-600 font-bold">
+                      ₹{borrowOutput}
+                    </span>
                   </div>
-                  {renderBar(parseFloat(borrowAmount), parseFloat(borrowOutput) - parseFloat(borrowAmount))}
+                  {renderBar(
+                    parseFloat(borrowAmount),
+                    parseFloat(borrowOutput) - parseFloat(borrowAmount)
+                  )}
 
-                  {address && (<button className="mt-5 bg-blue-600 text-white px-4 py-2 rounded-full">Borrow Now</button>)}
+                  {address && (
+                    <button className="mt-5 bg-blue-600 text-white px-4 py-2 rounded-full">
+                      Borrow Now
+                    </button>
+                  )}
                 </>
               )}
               <div className="mt-5 flex items-center">
@@ -160,12 +189,21 @@ export default function Home() {
               {lendingOutput && (
                 <>
                   <div className="text-lg mb-2">
-                    Final Amount: <span className="text-2xl text-blue-600 font-bold">₹{lendingOutput}</span>
+                    Final Amount:{' '}
+                    <span className="text-2xl text-blue-600 font-bold">
+                      ₹{lendingOutput}
+                    </span>
                   </div>
-                  {renderBar(parseFloat(lendingAmount), parseFloat(lendingOutput) - parseFloat(lendingAmount))}
+                  {renderBar(
+                    parseFloat(lendingAmount),
+                    parseFloat(lendingOutput) - parseFloat(lendingAmount)
+                  )}
 
-                  {address && (<button className="mt-5 bg-blue-600 text-white px-4 py-2 rounded-full">Lend Now</button>)}
-
+                  {address && (
+                    <button className="mt-5 bg-blue-600 text-white px-4 py-2 rounded-full">
+                      Lend Now
+                    </button>
+                  )}
                 </>
               )}
               <div className="mt-5 flex items-center">
@@ -180,27 +218,54 @@ export default function Home() {
           </Tabs>
         </div>
       </div>
-
       <div className="flex justify-center mt-20">
         <div className="flex justify-around w-full max-w-4xl space-x-4">
           <div className="feature flex flex-col items-center justify-center h-52 w-64 bg-white shadow-lg rounded-2xl p-5">
-            <Image src={images.nine} alt="Collateral Free" height={100} width={100} />
-            <p className="mt-5 text-xl font-bold text-center">Collateral free Borrowing</p>
+            <Image
+              src={images.nine}
+              alt="Collateral Free"
+              height={100}
+              width={100}
+            />
+            <p className="mt-5 text-xl font-bold text-center">
+              Collateral free Borrowing
+            </p>
           </div>
 
           <div className="feature flex flex-col items-center justify-center h-52 w-64 bg-white shadow-lg rounded-2xl p-5">
-            <Image src={images.four} alt="Trusted Lending" height={100} width={100} />
-            <p className="mt-5 text-xl font-bold text-center">Trusted Lending</p>
+            <Image
+              src={images.four}
+              alt="Trusted Lending"
+              height={100}
+              width={100}
+            />
+            <p className="mt-5 text-xl font-bold text-center">
+              Trusted Lending
+            </p>
           </div>
 
           <div className="feature flex flex-col items-center justify-center h-52 w-64 bg-white shadow-lg rounded-2xl p-5">
-            <Image src={images.eleven} alt="p2p Transactions" height={100} width={100} />
-            <p className="mt-5 text-xl font-bold text-center">p2p Based Transaction</p>
+            <Image
+              src={images.eleven}
+              alt="p2p Transactions"
+              height={100}
+              width={100}
+            />
+            <p className="mt-5 text-xl font-bold text-center">
+              p2p Based Transaction
+            </p>
           </div>
 
           <div className="feature flex flex-col items-center justify-center h-52 w-64 bg-white shadow-lg rounded-2xl p-5">
-            <Image src={images.six} alt="Secure Process" height={100} width={100} />
-            <p className="mt-5 text-xl font-bold text-center">End to End Secure Process</p>
+            <Image
+              src={images.six}
+              alt="Secure Process"
+              height={100}
+              width={100}
+            />
+            <p className="mt-5 text-xl font-bold text-center">
+              End to End Secure Process
+            </p>
           </div>
         </div>
       </div>
@@ -208,19 +273,15 @@ export default function Home() {
   );
 }
 
-
-
-
 // export const metadata = {
 //   title: "Home - Simple",
 //   description: "Page description",
 // };
 
-
 // export default function Home() {
 //   return (
 //     <>
-    
+
 //     </>
 //   );
 // }
