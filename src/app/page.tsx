@@ -6,10 +6,8 @@ import Image from 'next/image';
 import { Tabs, Input, Slider } from 'antd';
 import { DollarOutlined, CalendarOutlined } from '@ant-design/icons';
 import Navbar from '@/components/Navbar';
+import { connect, disconnect } from 'starknetkit';
 
-import { useAccount, useConnect } from 'wagmi';
-
-// import '../css/style.css';
 
 const images = {
   one: '/assets/1.png',
@@ -28,14 +26,38 @@ const images = {
 const { TabPane } = Tabs;
 
 export default function Home() {
-  const { address } = useAccount();
-
+  const [address, setAddress] = useState('');
+  const [connection, setConnection] = useState(undefined);
+  const [provider, setProvider] = useState(undefined);
+  
   const [borrowAmount, setBorrowAmount] = useState('');
   const [borrowMonths, setBorrowMonths] = useState(1);
   const [borrowOutput, setBorrowOutput] = useState<string | null>(null);
   const [lendingAmount, setLendingAmount] = useState('');
   const [lendingMonths, setLendingMonths] = useState(1);
   const [lendingOutput, setLendingOutput] = useState<string | null>(null);
+
+  useEffect(() => {
+    const checkWalletConnection = async () => {
+      try {
+        const connection = await connect();
+        console.log(connection.wallet?.account.address);
+        if (connection && connection.wallet?.isConnected) {
+          setProvider(connection.wallet.account);
+          setAddress(connection.wallet?.account.address);
+        } else {
+          await disconnect();
+          setConnection(undefined);
+          setProvider(undefined);
+          setAddress('');
+        }
+      } catch (error) {
+        console.error('Failed to connect or disconnect wallet:', error);
+      }
+    };
+  
+    checkWalletConnection();
+  }, []);
 
   const formatDuration = (months: number) => {
     if (months < 12) {
